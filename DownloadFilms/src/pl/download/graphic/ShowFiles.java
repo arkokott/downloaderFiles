@@ -66,17 +66,17 @@ public class ShowFiles extends javax.swing.JFrame {
     private void ShowFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ShowFieldMouseClicked
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
-        String[] tableNumberFile;
-        String podzielony = null;
+        String calosc = "";
+        
         try {
-            tableNumberFile = modelShow.read();
-            for (int i = 0; i < tableNumberFile.length ; i++) {   
-             podzielony = tableNumberFile[i] + "\n" + tableNumberFile[i-1];
-            }
-            ShowField.setText(podzielony);
+            for(Object x : modelShow.read().toArray())
+                calosc += (String) x + "\n";
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        ShowField.setText(calosc);
+
     }//GEN-LAST:event_ShowFieldMouseClicked
 
     /**
