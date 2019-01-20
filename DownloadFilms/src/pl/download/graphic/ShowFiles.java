@@ -35,6 +35,7 @@ public class ShowFiles extends javax.swing.JFrame {
         ShowField.setEditable(false);
         ShowField.setColumns(20);
         ShowField.setRows(5);
+        ShowField.setText("Kliknij by wyświetlić listę");
         ShowField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ShowFieldMouseClicked(evt);
@@ -66,16 +67,19 @@ public class ShowFiles extends javax.swing.JFrame {
     private void ShowFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ShowFieldMouseClicked
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
-        String calosc = "";
+        /*String calosc = "";
         
         try {
-            for(Object x : modelShow.read().toArray())
+            for(Object x : modelShow.readFile())
                 calosc += (String) x + "\n";
         } catch (FileNotFoundException ex) {
             Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        try {
+            ShowField.setText(modelShow.divisionLine());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        ShowField.setText(calosc);
 
     }//GEN-LAST:event_ShowFieldMouseClicked
 

@@ -13,42 +13,49 @@ import java.util.Scanner;
  * @author Artur Kokott
  */
 public class ModelShow {
-
-    /*    public String read() throws FileNotFoundException {
-        File file = new File("d:\\Pobrane\\vcd.txt");
-        Scanner in = new Scanner(file);
-        String textInFile = in.nextLine();
-        return textInFile;
-    }*/
     
-    private List<String> splitedArrayList = new ArrayList<>();
-    
-    /**
-     *
-     * @param beginIndex
-     * @param endIndex
-     * @return
-     */
-    public String substring(int beginIndex) {
-        return null;
+    public String substring(int beginIndex, int endIndex) {
+        return "";
     }
     
-    public List<String> read() throws FileNotFoundException{
+    public String readFile() throws FileNotFoundException{
         File file = new File("d:\\Pobrane\\vcd.txt");
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
         
-        textInFile = textInFile.substring(26);
-        
-        
-        
-        
+        textInFile = textInFile.substring(26, textInFile.length()-4);
 
-        splitedArrayList = Arrays.asList(textInFile.split("\"},\""));
+        return textInFile;
+    }
+    
+    public String divisionLine() throws FileNotFoundException {
+        String allText = readFile();
+        String allLine;
+        String allLineForName;
+        String numberFile;
+        String nameFile;
+        String numberAndNameFile;
         
-        
-        
+        List<String> splitedArrayList = Arrays.asList(allText.split("\"},\""));
 
-        return splitedArrayList;
+        allLine = splitedArrayList.get(0); //wyciaganie poszczegolnych arrayow
+        
+        List<String> splitedOneLineNumber = Arrays.asList(allLine.split("\":"));
+        
+        allLineForName = allLine.substring(20);
+        List<String> splitedOneLineName = Arrays.asList(allLineForName.split("\","));
+                
+        numberFile = splitedOneLineNumber.get(0);
+        nameFile = splitedOneLineName.get(0);
+        
+        numberAndNameFile = numberFile + " - " + nameFile;
+        
+        //for(Object splitedArrayListOneLine : splitedArrayList)
+            //List<String> splitedOneLineNumber = Arrays.asList(splitedArrayListOneLine.split("\"},\""));
+                //List<String> splitedOneLineNumber = Arrays.asList(splitedArrayListOneLine.split("a"));
+            
+        
+        
+        return numberAndNameFile;
     }
 }
