@@ -30,7 +30,7 @@ public class Model {
     }
 
     public String link(String fileNumber, int radioSelected) {
-        int numberSrv = rand.nextInt(20) + 1;
+        int numberSrv = rand.nextInt(23) + 1;
         String link = "";
         Integer fileNumberToMD5 = Integer.parseInt(fileNumber) + rand.nextInt(99) + 1;
 
