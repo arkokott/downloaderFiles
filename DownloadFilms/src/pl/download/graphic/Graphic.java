@@ -13,7 +13,7 @@ public class Graphic extends javax.swing.JFrame {
      * Creates new form NewGraphic
      */
     public Graphic() {
-        super("Generator links");
+        super("Generator linków");
         initComponents();
     }
 
@@ -116,7 +116,7 @@ public class Graphic extends javax.swing.JFrame {
         int radioSelected;
 
         if (getNumberFile == null || getNumberFile.equals("")) {
-            JOptionPane.showMessageDialog(null, "Musisz podać liczbę!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             if (wgetRadio.isSelected()) {
                 radioSelected = 1;
@@ -126,7 +126,7 @@ public class Graphic extends javax.swing.JFrame {
             try {
                 generateLinkField.setText(model.link(getNumberFile, radioSelected));
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Nie podawaj tekstu", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Musisz podać liczbę!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 

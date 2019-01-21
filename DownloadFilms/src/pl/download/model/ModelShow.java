@@ -29,13 +29,14 @@ public class ModelShow {
 
     public String divisionLine() throws FileNotFoundException {
         String allText = readFile();
-        String allLineForName;
-        String numberFile;
-        String nameFile;
-        String numberAndNameFile = "";
+        String lessNumber, lessName, lessSize;
+        String numberFile, nameFile, sizeFile, linkFile;
+        String result = "";
         List<String> listFull = new LinkedList<String>();
         List<String> listNumber = new LinkedList<String>();
         List<String> listName = new LinkedList<String>();
+        List<String> listSize = new LinkedList<String>();
+        List<String> listLink = new LinkedList<String>();
         
         listFull = Arrays.asList(allText.split("\"},\""));
 
@@ -43,16 +44,23 @@ public class ModelShow {
 
             listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
 
-            //allLineForName = oneElement.substring(20);
-            allLineForName = listNumber.get(1);
-            listName = Arrays.asList(allLineForName.split("\","));
+            lessNumber = listNumber.get(1);
+            listName = Arrays.asList(lessNumber.split("\",\"rozmiar\":\""));
+            
+            lessName = listName.get(1);
+            listSize = Arrays.asList(lessName.split("\",\"url\":\""));
+            
+            lessSize = listSize.get(1);
+            listLink = Arrays.asList(lessSize.split("\",\"gfx\":\""));
 
             numberFile = listNumber.get(0);
             nameFile = listName.get(0);
+            sizeFile = listSize.get(0);
+            linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
 
-            numberAndNameFile += numberFile + " - " + nameFile + "\n";
+            result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
         }
 
-        return numberAndNameFile;
+        return result;
     }
 }
