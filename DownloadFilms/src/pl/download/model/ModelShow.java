@@ -33,20 +33,22 @@ public class ModelShow {
         String numberFile;
         String nameFile;
         String numberAndNameFile = "";
-        List<String> splitedArrayList = new LinkedList<String>();
-        List<String> splitedOneLineName = new LinkedList<String>();
+        List<String> listFull = new LinkedList<String>();
+        List<String> listNumber = new LinkedList<String>();
+        List<String> listName = new LinkedList<String>();
+        
+        listFull = Arrays.asList(allText.split("\"},\""));
 
-        splitedArrayList = Arrays.asList(allText.split("\"},\""));
+        for (String oneElement : listFull) {
 
-        for (String splitedArrayListOneElement : splitedArrayList) {
-            
-            List<String> splitedOneLineNumber = Arrays.asList(splitedArrayListOneElement.split("\":"));
+            listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
 
-            allLineForName = splitedArrayListOneElement.substring(20);
-            splitedOneLineName = Arrays.asList(allLineForName.split("\","));
+            //allLineForName = oneElement.substring(20);
+            allLineForName = listNumber.get(1);
+            listName = Arrays.asList(allLineForName.split("\","));
 
-            numberFile = splitedOneLineNumber.get(0);
-            nameFile = splitedOneLineName.get(0);
+            numberFile = listNumber.get(0);
+            nameFile = listName.get(0);
 
             numberAndNameFile += numberFile + " - " + nameFile + "\n";
         }
