@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,7 +28,8 @@ public class ModelShow {
     }
 
     private String readFile() throws FileNotFoundException, IOException {
-        File file = new File("d:\\Pobrane\\lista_full.txt");
+        String tempDir = System.getProperty("java.io.tmpdir");
+        File file = new File(tempDir + "\\lista_full.txt");
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
 
@@ -38,11 +40,11 @@ public class ModelShow {
         //downloadFile(searchWord);
 
         String allText = readFile();
-        
+
         String[] allPages = allText.substring(10).split("\",\"");
-        
+
         allText = allText.substring(26, allText.length() - 4);
-        
+
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
         String result = "";
@@ -74,8 +76,8 @@ public class ModelShow {
 
             result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
         }
-       
-            return allPages[0] + "!@" + result;
+
+        return allPages[0] + "!@" + result;
     }
 
     private void downloadFile(String searchWord) throws MalformedURLException, IOException {
@@ -83,6 +85,7 @@ public class ModelShow {
         OutputStream outputStream = null;
         byte[] buffer = new byte[2048];
         int length;
+        String tempDir = System.getProperty("java.io.tmpdir");
 
         String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=1";
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
@@ -106,7 +109,7 @@ public class ModelShow {
         }
 
         inputStream = httpConnection.getInputStream();
-        outputStream = new FileOutputStream("D:\\Pobrane\\lista_full.txt");
+        outputStream = new FileOutputStream(tempDir + "\\lista_full.txt");
 
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);
@@ -114,5 +117,14 @@ public class ModelShow {
 
         outputStream.close();
         inputStream.close();
+    }
+
+    public String showAllResults(String searchWord, Integer page, Integer pageMax) {
+        if (page > pageMax) {
+            JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            
+        }
+        return "";
     }
 }

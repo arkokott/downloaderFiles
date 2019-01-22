@@ -65,6 +65,11 @@ public class ShowFiles extends javax.swing.JFrame {
         labelPageMax.setText("Dostepnych stron wyszukiwanej frazy:");
 
         allPageViewButton.setText("Pokaż wyniki");
+        allPageViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allPageViewButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,13 +135,13 @@ public class ShowFiles extends javax.swing.JFrame {
         List<String> setPageMax = new LinkedList<String>();
 
         if (getSearchWord == null || getSearchWord.equals("")) {
-            JOptionPane.showMessageDialog(null, "Pole nie może być puste", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
                 setPageMax = Arrays.asList(modelShow.divisionLine(getSearchWord).split("!@"));
                 maxPageField.setText(setPageMax.get(0));
-                
-                getListFiles = setPageMax.get(1);                
+
+                getListFiles = setPageMax.get(1);
                 ShowField.setText(getListFiles);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
@@ -145,6 +150,27 @@ public class ShowFiles extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void allPageViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allPageViewButtonActionPerformed
+        ShowField.setLineWrap(true);
+        ModelShow modelShow = new ModelShow();
+        String getSearchWord = searchWordField.getText().replace(" ", "+");
+        String allPagesResults;
+        String pageMax = maxPageField.getText();
+        String getPageValue = pageField.getText();
+
+        if (getPageValue == null || getPageValue.equals("")) {
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                allPagesResults = modelShow.showAllResults(getSearchWord, Integer.parseInt(getPageValue), Integer.parseInt(pageMax));
+
+                ShowField.setText(allPagesResults);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Podaj ilość stron.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_allPageViewButtonActionPerformed
 
     /**
      * @param args the command line arguments
