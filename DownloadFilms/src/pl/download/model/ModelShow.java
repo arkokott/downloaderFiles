@@ -26,20 +26,23 @@ public class ModelShow {
         return "";
     }
 
-    private String readFile(String page) throws FileNotFoundException, IOException {
-        File file = new File("d:\\Pobrane\\lista_" + page + ".txt");
+    private String readFile() throws FileNotFoundException, IOException {
+        File file = new File("d:\\Pobrane\\lista_full.txt");
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
-
-        textInFile = textInFile.substring(26, textInFile.length() - 4);
 
         return textInFile;
     }
 
-    public String divisionLine(String searchWord, String page) throws FileNotFoundException, IOException {
-        //downloadFile(searchWord, page);
+    public String divisionLine(String searchWord) throws FileNotFoundException, IOException {
+        //downloadFile(searchWord);
+
+        String allText = readFile();
         
-        String allText = readFile(page);
+        String[] allPages = allText.substring(10).split("\",\"");
+        
+        allText = allText.substring(26, allText.length() - 4);
+        
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
         String result = "";
@@ -72,16 +75,16 @@ public class ModelShow {
             result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
         }
        
-        return result;
+            return allPages[0] + "!@" + result;
     }
 
-    private void downloadFile(String searchWord, String page) throws MalformedURLException, IOException {
+    private void downloadFile(String searchWord) throws MalformedURLException, IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         byte[] buffer = new byte[2048];
         int length;
 
-        String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=" + page;
+        String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=1";
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
@@ -103,7 +106,7 @@ public class ModelShow {
         }
 
         inputStream = httpConnection.getInputStream();
-        outputStream = new FileOutputStream("D:\\Pobrane\\lista_" + page + ".txt");
+        outputStream = new FileOutputStream("D:\\Pobrane\\lista_full.txt");
 
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);

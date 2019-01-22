@@ -2,6 +2,9 @@ package pl.download.graphic;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -37,6 +40,9 @@ public class ShowFiles extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         labelSearchWord = new javax.swing.JLabel();
         labelPage = new javax.swing.JLabel();
+        maxPageField = new javax.swing.JTextField();
+        labelPageMax = new javax.swing.JLabel();
+        allPageViewButton = new javax.swing.JButton();
 
         ShowField.setEditable(false);
         ShowField.setColumns(20);
@@ -50,32 +56,46 @@ public class ShowFiles extends javax.swing.JFrame {
             }
         });
 
-        labelSearchWord.setText("Szukany plik");
+        labelSearchWord.setText("Szukany plik:");
 
-        labelPage.setText("Ilość stron");
+        labelPage.setText("Ilość stron do wyświetlenia:");
+
+        maxPageField.setEnabled(false);
+
+        labelPageMax.setText("Dostepnych stron wyszukiwanej frazy:");
+
+        allPageViewButton.setText("Pokaż wyniki");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ShowPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(searchWordField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelSearchWord))
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelSearchWord)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(searchWordField, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchButton)))
+                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(labelPageMax)
+                                .addGap(45, 45, 45)
+                                .addComponent(labelPage))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(maxPageField, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(149, 149, 149)
                                 .addComponent(pageField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(searchButton))
-                            .addComponent(labelPage))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(67, 67, 67)
+                                .addComponent(allPageViewButton)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(ShowPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -84,12 +104,15 @@ public class ShowFiles extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelSearchWord)
-                    .addComponent(labelPage))
+                    .addComponent(labelPage)
+                    .addComponent(labelPageMax))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchWordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButton))
+                    .addComponent(searchButton)
+                    .addComponent(maxPageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(allPageViewButton))
                 .addGap(18, 18, 18)
                 .addComponent(ShowPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -102,14 +125,19 @@ public class ShowFiles extends javax.swing.JFrame {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
-        String getSearchWord = searchWordField.getText();
-        String getPage = pageField.getText();
+        String getSearchWord = searchWordField.getText().replace(" ", "+");
+        String getListFiles;
+        List<String> setPageMax = new LinkedList<String>();
 
-        if ((getPage == null || getPage.equals("")) || (getSearchWord == null || getSearchWord.equals(""))) {
-            JOptionPane.showMessageDialog(null, "Pole nie mogą być puste", "Error", JOptionPane.ERROR_MESSAGE);
+        if (getSearchWord == null || getSearchWord.equals("")) {
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                ShowField.setText(modelShow.divisionLine(getSearchWord, getPage));
+                setPageMax = Arrays.asList(modelShow.divisionLine(getSearchWord).split("!@"));
+                maxPageField.setText(setPageMax.get(0));
+                
+                getListFiles = setPageMax.get(1);                
+                ShowField.setText(getListFiles);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -157,8 +185,11 @@ public class ShowFiles extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ShowField;
     private javax.swing.JScrollPane ShowPanel;
+    private javax.swing.JButton allPageViewButton;
     private javax.swing.JLabel labelPage;
+    private javax.swing.JLabel labelPageMax;
     private javax.swing.JLabel labelSearchWord;
+    private javax.swing.JTextField maxPageField;
     private javax.swing.JTextField pageField;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchWordField;
