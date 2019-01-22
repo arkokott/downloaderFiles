@@ -1,12 +1,16 @@
 package pl.download.model;
 
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,19 +31,48 @@ public class ModelShow {
         return "";
     }
 
-    private String readFile() throws FileNotFoundException, IOException {
+    private String readFile(int numberFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
-        File file = new File(tempDir + "\\lista_full.txt");
+        File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
+        //jak bedzie polaczony plik z kilku trzeba wymyslec nazwe pliku, podczas testow zmienic na 0
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
 
         return textInFile;
     }
 
-    public String divisionLine(String searchWord) throws FileNotFoundException, IOException {
-        //downloadFile(searchWord);
+    private void readAndSaveFile(int numberFile, int lastFile) throws FileNotFoundException, IOException {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
+        Scanner in = new Scanner(file);
+        String textFromFile = in.nextLine();
 
-        String allText = readFile();
+        if (numberFile == 1) {
+            //dla pierwsze pliku, wycinamy tylko koniec
+            File newfile = new File(tempDir + "\\lista_0.txt");
+            newfile.createNewFile();
+            textFromFile = textFromFile.substring(0, textFromFile.length() - 4);
+            
+            PrintWriter output = new PrintWriter(tempDir + "lista_0.txt");
+            output.print(textFromFile + "\"},\"");
+            output.close();
+        } else if (numberFile == lastFile) {
+            //dla ostatniego wycinamy tylko poczatek
+            textFromFile = textFromFile.substring(26, textFromFile.length());
+            Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
+            output.append(textFromFile);
+            output.close();
+        } else {
+            //tutaj dla srodkowych plikow, wycinamy poczatek i koniec
+            textFromFile = textFromFile.substring(26, textFromFile.length() - 4);
+            Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
+            output.append(textFromFile + "\"},\"");
+            output.close();
+        }
+    }
+
+    public String divisionLine(int option) throws FileNotFoundException, IOException {
+        String allText = readFile(option);
 
         String[] allPages = allText.substring(10).split("\",\"");
 
@@ -80,14 +113,14 @@ public class ModelShow {
         return allPages[0] + "!@" + result;
     }
 
-    private void downloadFile(String searchWord) throws MalformedURLException, IOException {
+    public void downloadFile(String searchWord, int page) throws MalformedURLException, IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         byte[] buffer = new byte[2048];
         int length;
         String tempDir = System.getProperty("java.io.tmpdir");
 
-        String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=1";
+        String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=" + page;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
@@ -109,7 +142,7 @@ public class ModelShow {
         }
 
         inputStream = httpConnection.getInputStream();
-        outputStream = new FileOutputStream(tempDir + "\\lista_full.txt");
+        outputStream = new FileOutputStream(tempDir + "\\lista_" + page + ".txt");
 
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);
@@ -119,12 +152,24 @@ public class ModelShow {
         inputStream.close();
     }
 
-    public String showAllResults(String searchWord, Integer page, Integer pageMax) {
+    public String showAllResults(String searchWord, Integer page, Integer pageMax) throws IOException {
+        String all = "";
+        
         if (page > pageMax) {
             JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (page == 8) {
+            JOptionPane.showMessageDialog(null, "Wyniki już wyświetlono.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            
+            /*for (int i = 2; i <= page; i++) {
+                //downloadFile(searchWord, i);
+            }*/
+
+            for (int i = 1; i <= page; i++) {
+                readAndSaveFile(i, page);
+            }
+            all = divisionLine(0);
+
         }
-        return "";
+        return all;
     }
 }

@@ -138,7 +138,8 @@ public class ShowFiles extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                setPageMax = Arrays.asList(modelShow.divisionLine(getSearchWord).split("!@"));
+                //modelShow.downloadFile(getSearchWord, 1);
+                setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
                 maxPageField.setText(setPageMax.get(0));
 
                 getListFiles = setPageMax.get(1);
@@ -154,20 +155,23 @@ public class ShowFiles extends javax.swing.JFrame {
     private void allPageViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allPageViewButtonActionPerformed
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
-        String getSearchWord = searchWordField.getText().replace(" ", "+");
         String allPagesResults;
+        String getSearchWord = searchWordField.getText();
         String pageMax = maxPageField.getText();
         String getPageValue = pageField.getText();
+        List<String> result = new LinkedList<String>();
 
         if (getPageValue == null || getPageValue.equals("")) {
             JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
                 allPagesResults = modelShow.showAllResults(getSearchWord, Integer.parseInt(getPageValue), Integer.parseInt(pageMax));
-
-                ShowField.setText(allPagesResults);
+                result = Arrays.asList(allPagesResults.split("!@"));
+                ShowField.setText(result.get(1));
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Podaj ilość stron.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_allPageViewButtonActionPerformed
