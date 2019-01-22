@@ -26,8 +26,8 @@ public class ModelShow {
         return "";
     }
 
-    private String readFile() throws FileNotFoundException, IOException {
-        File file = new File("d:\\Pobrane\\vcd.txt");
+    private String readFile(String page) throws FileNotFoundException, IOException {
+        File file = new File("d:\\Pobrane\\lista_" + page + ".txt");
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
 
@@ -38,9 +38,8 @@ public class ModelShow {
 
     public String divisionLine(String searchWord, String page) throws FileNotFoundException, IOException {
         //downloadFile(searchWord, page);
-        System.out.print(searchWord + " " + page);
         
-        String allText = readFile();
+        String allText = readFile(page);
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
         String result = "";
@@ -104,7 +103,7 @@ public class ModelShow {
         }
 
         inputStream = httpConnection.getInputStream();
-        outputStream = new FileOutputStream("D:\\Pobrane\\vcd.txt");
+        outputStream = new FileOutputStream("D:\\Pobrane\\lista_" + page + ".txt");
 
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);

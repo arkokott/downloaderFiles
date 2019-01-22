@@ -105,17 +105,15 @@ public class ShowFiles extends javax.swing.JFrame {
         String getSearchWord = searchWordField.getText();
         String getPage = pageField.getText();
 
-        if ((getSearchWord == null || getSearchWord.equals("")) || (getPage == null || getPage.equals(""))) {
+        if ((getPage == null || getPage.equals("")) || (getSearchWord == null || getSearchWord.equals(""))) {
             JOptionPane.showMessageDialog(null, "Pole nie mogą być puste", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {        
+        } else {
             try {
                 ShowField.setText(modelShow.divisionLine(getSearchWord, getPage));
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Musisz podać liczbę!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -149,6 +147,7 @@ public class ShowFiles extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ShowFiles().setVisible(true);
             }
