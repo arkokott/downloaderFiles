@@ -1,14 +1,16 @@
 package pl.download.model;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class ModelShow {
         return "";
     }
 
-    public String readFile() throws FileNotFoundException {
+    private String readFile() throws FileNotFoundException, IOException {
         File file = new File("d:\\Pobrane\\vcd.txt");
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
@@ -34,7 +36,10 @@ public class ModelShow {
         return textInFile;
     }
 
-    public String divisionLine() throws FileNotFoundException, IOException {
+    public String divisionLine(String searchWord, String page) throws FileNotFoundException, IOException {
+        //downloadFile(searchWord, page);
+        System.out.print(searchWord + " " + page);
+        
         String allText = readFile();
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
@@ -67,23 +72,39 @@ public class ModelShow {
 
             result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
         }
-
-        downloadFile();
+       
         return result;
     }
 
-    public void downloadFile() throws MalformedURLException, IOException {
+    private void downloadFile(String searchWord, String page) throws MalformedURLException, IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
         byte[] buffer = new byte[2048];
         int length;
 
-        URL url = new URL("https://www.w3.org/Protocols/rfc2616/rfc2616.txt");
+        String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=" + page;
+        byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+        int postDataLength = postData.length;
 
-        URLConnection con = url.openConnection();
+        String url = "https://filebit.pl/includes/ajax.php";
+        HttpURLConnection httpConnection = (HttpURLConnection) new URL(url).openConnection();
+        httpConnection.setDoOutput(true); // Triggers POST.
+        httpConnection.setRequestMethod("POST");
 
-        inputStream = con.getInputStream();
-        outputStream = new FileOutputStream("D:\\Pobrane\\test.txt");
+        httpConnection.setRequestProperty("User-Agent", "-");
+        httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        httpConnection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+        httpConnection.setRequestProperty("Cookie", "PHPSESSID=sijc5liid66b52rdtd4f316ji4");
+        httpConnection.setRequestProperty("Accept", "*/*");
+
+        httpConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+        httpConnection.setUseCaches(false);
+        try (DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream())) {
+            wr.write(postData);
+        }
+
+        inputStream = httpConnection.getInputStream();
+        outputStream = new FileOutputStream("D:\\Pobrane\\vcd.txt");
 
         while ((length = inputStream.read(buffer)) != -1) {
             outputStream.write(buffer, 0, length);

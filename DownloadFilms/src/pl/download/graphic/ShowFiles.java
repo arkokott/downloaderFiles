@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import pl.download.model.ModelShow;
 
 /**
@@ -31,32 +32,66 @@ public class ShowFiles extends javax.swing.JFrame {
 
         ShowPanel = new javax.swing.JScrollPane();
         ShowField = new javax.swing.JTextArea();
+        searchWordField = new javax.swing.JTextField();
+        pageField = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
+        labelSearchWord = new javax.swing.JLabel();
+        labelPage = new javax.swing.JLabel();
 
         ShowField.setEditable(false);
         ShowField.setColumns(20);
         ShowField.setRows(5);
-        ShowField.setText("Kliknij by wyświetlić listę");
-        ShowField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ShowFieldMouseClicked(evt);
+        ShowPanel.setViewportView(ShowField);
+
+        searchButton.setText("Szukaj");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
             }
         });
-        ShowPanel.setViewportView(ShowField);
+
+        labelSearchWord.setText("Szukany plik");
+
+        labelPage.setText("Ilość stron");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ShowPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(ShowPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1045, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(searchWordField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelSearchWord))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(pageField, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchButton))
+                            .addComponent(labelPage))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ShowPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelSearchWord)
+                    .addComponent(labelPage))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchWordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton))
+                .addGap(18, 18, 18)
+                .addComponent(ShowPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -64,19 +99,26 @@ public class ShowFiles extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ShowFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ShowFieldMouseClicked
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
+        String getSearchWord = searchWordField.getText();
+        String getPage = pageField.getText();
 
-        try {
-            ShowField.setText(modelShow.divisionLine());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
+        if ((getSearchWord == null || getSearchWord.equals("")) || (getPage == null || getPage.equals(""))) {
+            JOptionPane.showMessageDialog(null, "Pole nie mogą być puste", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {        
+            try {
+                ShowField.setText(modelShow.divisionLine(getSearchWord, getPage));
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Musisz podać liczbę!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
-
-    }//GEN-LAST:event_ShowFieldMouseClicked
+    }//GEN-LAST:event_searchButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -116,5 +158,10 @@ public class ShowFiles extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ShowField;
     private javax.swing.JScrollPane ShowPanel;
+    private javax.swing.JLabel labelPage;
+    private javax.swing.JLabel labelSearchWord;
+    private javax.swing.JTextField pageField;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JTextField searchWordField;
     // End of variables declaration//GEN-END:variables
 }
