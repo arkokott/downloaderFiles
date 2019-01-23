@@ -27,16 +27,13 @@ import javax.swing.JOptionPane;
  */
 public class ModelShow {
 
-    public String substring(int beginIndex, int endIndex) {
-        return "";
-    }
-
     private String readFile(int numberFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
         File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
-        //jak bedzie polaczony plik z kilku trzeba wymyslec nazwe pliku, podczas testow zmienic na 0
+
         Scanner in = new Scanner(file);
         String textInFile = in.nextLine();
+        in.close();
 
         return textInFile;
     }
@@ -52,7 +49,7 @@ public class ModelShow {
             File newfile = new File(tempDir + "\\lista_0.txt");
             newfile.createNewFile();
             textFromFile = textFromFile.substring(0, textFromFile.length() - 4);
-            
+
             PrintWriter output = new PrintWriter(tempDir + "lista_0.txt");
             output.print(textFromFile + "\"},\"");
             output.close();
@@ -154,19 +151,20 @@ public class ModelShow {
 
     public String showAllResults(String searchWord, Integer page, Integer pageMax) throws IOException {
         String all = "";
-        
+
         if (page > pageMax) {
             JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (page == 8) {
-            JOptionPane.showMessageDialog(null, "Wyniki już wyświetlono.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (page == 1) {
+            all = divisionLine(1);
         } else {
-            /*for (int i = 2; i <= page; i++) {
-                //downloadFile(searchWord, i);
-            }*/
+            //for (int i = 2; i <= page; i++) {
+            //downloadFile(searchWord, i);
+            //}
 
             for (int i = 1; i <= page; i++) {
                 readAndSaveFile(i, page);
             }
+
             all = divisionLine(0);
 
         }

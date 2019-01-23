@@ -1,5 +1,7 @@
 package pl.download.graphic;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -43,6 +45,12 @@ public class ShowFiles extends javax.swing.JFrame {
         maxPageField = new javax.swing.JTextField();
         labelPageMax = new javax.swing.JLabel();
         allPageViewButton = new javax.swing.JButton();
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         ShowField.setEditable(false);
         ShowField.setColumns(20);
@@ -175,6 +183,24 @@ public class ShowFiles extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_allPageViewButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String nameFile;        
+        File folder = new File(tempDir);
+        File[] listOfFiles = folder.listFiles();
+        
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                nameFile = listOfFiles[i].getName();
+                 
+                if (nameFile.contains("lista_")) {
+                    File file = new File(tempDir + "\\" + nameFile);
+                    file.delete();                    
+                }
+            }
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
