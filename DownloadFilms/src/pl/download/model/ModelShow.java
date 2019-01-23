@@ -15,10 +15,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NavigableMap;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 import javax.swing.JOptionPane;
 
 /**
@@ -73,17 +82,19 @@ public class ModelShow {
 
         String[] allPages = allText.substring(10).split("\",\"");
 
-        allText = allText.substring(26, allText.length() - 4);
+        allText = allText.substring(23, allText.length() - 4);
 
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
         String result = "";
+        Integer key = 1;
         List<String> listFull = new LinkedList<String>();
         List<String> listNumber = new LinkedList<String>();
         List<String> listName = new LinkedList<String>();
         List<String> listSize = new LinkedList<String>();
         List<String> listLink = new LinkedList<String>();
-
+        NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
+        
         listFull = Arrays.asList(allText.split("\"},\""));
 
         for (String oneElement : listFull) {
@@ -103,8 +114,16 @@ public class ModelShow {
             nameFile = listName.get(0);
             sizeFile = listSize.get(0);
             linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
+            
+            
+            key = Integer.parseInt(numberFile);
 
-            result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
+            //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
+            map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");              
+        }
+       
+        for(Entry<Object, Object> ent:map.entrySet()){
+            result += ent.getValue() + "\n";
         }
 
         return allPages[0] + "!@" + result;
@@ -154,8 +173,9 @@ public class ModelShow {
 
         if (page > pageMax) {
             JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (page == 1) {
             all = divisionLine(1);
+        } else if (page <= 1) {
+            all = divisionLine(1);  
         } else {
             for (int i = 2; i <= page; i++) {
                 downloadFile(searchWord, i);

@@ -1,7 +1,6 @@
 package pl.download.graphic;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -55,6 +54,8 @@ public class ShowFiles extends javax.swing.JFrame {
         ShowField.setEditable(false);
         ShowField.setColumns(20);
         ShowField.setRows(5);
+        ShowField.setAutoscrolls(false);
+        ShowField.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ShowPanel.setViewportView(ShowField);
 
         searchButton.setText("Szukaj");
@@ -68,6 +69,7 @@ public class ShowFiles extends javax.swing.JFrame {
 
         labelPage.setText("Ilość stron do wyświetlenia:");
 
+        maxPageField.setEditable(false);
         maxPageField.setEnabled(false);
 
         labelPageMax.setText("Dostepnych stron wyszukiwanej frazy:");
@@ -152,6 +154,7 @@ public class ShowFiles extends javax.swing.JFrame {
 
                 getListFiles = setPageMax.get(1);
                 ShowField.setText(getListFiles);
+                ShowField.setCaretPosition(0);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -176,6 +179,7 @@ public class ShowFiles extends javax.swing.JFrame {
                 allPagesResults = modelShow.showAllResults(getSearchWord, Integer.parseInt(getPageValue), Integer.parseInt(pageMax));
                 result = Arrays.asList(allPagesResults.split("!@"));
                 ShowField.setText(result.get(1));
+                ShowField.setCaretPosition(0);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Podaj ilość stron.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (IOException ex) {

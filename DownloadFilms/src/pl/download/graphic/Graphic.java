@@ -51,6 +51,7 @@ public class Graphic extends javax.swing.JFrame {
             }
         });
 
+        wgetRadio.setSelected(true);
         wgetRadio.setText("Generuj wget");
 
         numberFileLabel.setText("Podaj numer pliku");
