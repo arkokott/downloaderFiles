@@ -29,14 +29,14 @@ public class Model {
         }
     }
 
-    public String link(String fileNumber, int radioSelected) {
+    public String link(String fileNumber, int checkBoxWgetSelected) {
         int numberSrv = rand.nextInt(23) + 1;
         String link = "";
         Integer fileNumberToMD5 = Integer.parseInt(fileNumber) + rand.nextInt(99) + 1;
 
         String hashFile = getMd5(fileNumberToMD5.toString());
 
-        if (radioSelected == 0) {
+        if (checkBoxWgetSelected == 0) {
             link = "http://s" + numberSrv + ".filebit.pl/plik-" + hashFile + "/RD/" + fileNumber + "/40526/" + fileNumberToMD5 + ".rar";
         } else {
             link = "wget -U - -S --content-disposition http://s" + numberSrv + ".filebit.pl/plik-" + hashFile + "/RD/" + fileNumber + "/40526/" + fileNumberToMD5 + ".rar";

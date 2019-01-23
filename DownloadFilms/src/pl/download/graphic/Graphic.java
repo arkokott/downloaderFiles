@@ -29,10 +29,10 @@ public class Graphic extends javax.swing.JFrame {
         numberFile = new javax.swing.JTextField();
         genereteButton = new javax.swing.JButton();
         showFilesButton = new javax.swing.JButton();
-        wgetRadio = new javax.swing.JRadioButton();
         numberFileLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         generateLinkField = new javax.swing.JTextArea();
+        checkBoxWget = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -51,15 +51,15 @@ public class Graphic extends javax.swing.JFrame {
             }
         });
 
-        wgetRadio.setSelected(true);
-        wgetRadio.setText("Generuj wget");
-
         numberFileLabel.setText("Podaj numer pliku");
 
         generateLinkField.setEditable(false);
         generateLinkField.setColumns(20);
         generateLinkField.setRows(5);
         jScrollPane1.setViewportView(generateLinkField);
+
+        checkBoxWget.setSelected(true);
+        checkBoxWget.setText("Generuj z wget");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,14 +75,13 @@ public class Graphic extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addComponent(numberFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(29, 29, 29)
                         .addComponent(genereteButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(wgetRadio))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(numberFile, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(numberFile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkBoxWget, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
@@ -98,8 +97,8 @@ public class Graphic extends javax.swing.JFrame {
                         .addComponent(numberFile, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(genereteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(wgetRadio))
+                        .addGap(18, 18, 18)
+                        .addComponent(checkBoxWget))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(showFilesButton)
@@ -114,18 +113,18 @@ public class Graphic extends javax.swing.JFrame {
         Model model = new Model();
         String getNumberFile = numberFile.getText();
         generateLinkField.setLineWrap(true);
-        int radioSelected;
+        int checkBoxWgetSelected;
 
         if (getNumberFile == null || getNumberFile.equals("")) {
             JOptionPane.showMessageDialog(null, "Pole nie może być puste", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            if (wgetRadio.isSelected()) {
-                radioSelected = 1;
+            if (checkBoxWget.isSelected()) {
+                checkBoxWgetSelected = 1;
             } else {
-                radioSelected = 0;
+                checkBoxWgetSelected = 0;
             }
             try {
-                generateLinkField.setText(model.link(getNumberFile, radioSelected));
+                generateLinkField.setText(model.link(getNumberFile, checkBoxWgetSelected));
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Musisz podać liczbę!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -176,12 +175,12 @@ public class Graphic extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox checkBoxWget;
     private javax.swing.JTextArea generateLinkField;
     private javax.swing.JButton genereteButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField numberFile;
     private javax.swing.JLabel numberFileLabel;
     private javax.swing.JButton showFilesButton;
-    private javax.swing.JRadioButton wgetRadio;
     // End of variables declaration//GEN-END:variables
 }
