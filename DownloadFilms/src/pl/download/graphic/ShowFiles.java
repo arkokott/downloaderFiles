@@ -146,7 +146,7 @@ public class ShowFiles extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                //modelShow.downloadFile(getSearchWord, 1);
+                modelShow.downloadFile(getSearchWord, 1);
                 setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
                 maxPageField.setText(setPageMax.get(0));
 
@@ -186,17 +186,17 @@ public class ShowFiles extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         String tempDir = System.getProperty("java.io.tmpdir");
-        String nameFile;        
+        String nameFile;
         File folder = new File(tempDir);
         File[] listOfFiles = folder.listFiles();
-        
+
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 nameFile = listOfFiles[i].getName();
-                 
+
                 if (nameFile.contains("lista_")) {
                     File file = new File(tempDir + "\\" + nameFile);
-                    file.delete();                    
+                    file.delete();
                 }
             }
         }

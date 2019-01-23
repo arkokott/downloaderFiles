@@ -157,9 +157,9 @@ public class ModelShow {
         } else if (page == 1) {
             all = divisionLine(1);
         } else {
-            //for (int i = 2; i <= page; i++) {
-            //downloadFile(searchWord, i);
-            //}
+            for (int i = 2; i <= page; i++) {
+                downloadFile(searchWord, i);
+            }
 
             for (int i = 1; i <= page; i++) {
                 readAndSaveFile(i, page);
