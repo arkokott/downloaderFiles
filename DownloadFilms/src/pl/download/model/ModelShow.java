@@ -15,18 +15,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NavigableMap;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.TreeMap;
 import javax.swing.JOptionPane;
 
@@ -39,19 +33,31 @@ public class ModelShow {
     private String readFile(int numberFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
         File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
+        String textFromFile = "";
 
-        Scanner in = new Scanner(file);
-        String textInFile = in.nextLine();
-        in.close();
+        if (file.exists() && !file.isDirectory()) {
+            Scanner in = new Scanner(file);
+            textFromFile = in.nextLine();
+            in.close();
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak pliku.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
-        return textInFile;
+        return textFromFile;
     }
 
     private void readAndSaveFile(int numberFile, int lastFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
         File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
-        Scanner in = new Scanner(file);
-        String textFromFile = in.nextLine();
+        String textFromFile = "";
+        if (file.exists() && !file.isDirectory()) {
+            Scanner in = new Scanner(file);
+            textFromFile = in.nextLine();
+            in.close();
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak pliku.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        List<String> listAllText = new LinkedList<String>();
 
         if (numberFile == 1) {
             //dla pierwsze pliku, wycinamy tylko koniec
@@ -64,13 +70,22 @@ public class ModelShow {
             output.close();
         } else if (numberFile == lastFile) {
             //dla ostatniego wycinamy tylko poczatek
-            textFromFile = textFromFile.substring(26, textFromFile.length());
+            
+            listAllText = Arrays.asList(textFromFile.split("array"));
+            textFromFile = listAllText.get(1).substring(4, listAllText.get(1).length());
+            
+            //textFromFile = textFromFile.substring(26, textFromFile.length());
+            
             Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
             output.append(textFromFile);
             output.close();
         } else {
             //tutaj dla srodkowych plikow, wycinamy poczatek i koniec
-            textFromFile = textFromFile.substring(26, textFromFile.length() - 4);
+            
+            listAllText = Arrays.asList(textFromFile.split("array"));
+            textFromFile = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
+            
+            //textFromFile = textFromFile.substring(26, textFromFile.length() - 4);
             Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
             output.append(textFromFile + "\"},\"");
             output.close();
@@ -79,11 +94,20 @@ public class ModelShow {
 
     public String divisionLine(int option) throws FileNotFoundException, IOException {
         String allText = readFile(option);
+        //sprawdzenie czy allText jest puste
+        if (allText == null || allText == "") {
+            //JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println("File not found and return null.");
+        } else {        
+        List<String> listAllText = new LinkedList<String>();
 
         String[] allPages = allText.substring(10).split("\",\"");
 
-        allText = allText.substring(23, allText.length() - 4);
-
+        listAllText = Arrays.asList(allText.split("array"));
+        allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
+        
+        
+        
         String lessNumber, lessName, lessSize;
         String numberFile, nameFile, sizeFile, linkFile;
         String result = "";
@@ -124,8 +148,9 @@ public class ModelShow {
         for (Entry<Object, Object> ent : map.entrySet()) {
             result += ent.getValue() + "\n";
         }
-
         return allPages[0] + "!@" + result;
+        }
+        return "error";
     }
 
     public void downloadFile(String searchWord, int page) throws MalformedURLException, IOException {

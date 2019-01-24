@@ -149,12 +149,17 @@ public class ShowFiles extends javax.swing.JFrame {
         } else {
             try {
                 modelShow.downloadFile(getSearchWord, 1);
+                //sprawdzenie czy divisionLine nie zwraca blednej zawartosci
+                if (modelShow.divisionLine(1).equals("error")) {
+                    System.err.println("File not found and return null.");
+                } else {
                 setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
                 maxPageField.setText(setPageMax.get(0));
 
                 getListFiles = setPageMax.get(1);
                 ShowField.setText(getListFiles);
                 ShowField.setCaretPosition(0);
+                }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
