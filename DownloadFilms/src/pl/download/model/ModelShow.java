@@ -104,49 +104,54 @@ public class ModelShow {
             String[] allPages = allText.substring(10).split("\",\"");
 
             listAllText = Arrays.asList(allText.split("array"));
-            allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
 
-            String lessNumber, lessName, lessSize;
-            String numberFile, nameFile, sizeFile, linkFile;
-            String result = "";
-            Integer key = 1;
-            List<String> listFull = new LinkedList<String>();
-            List<String> listNumber = new LinkedList<String>();
-            List<String> listName = new LinkedList<String>();
-            List<String> listSize = new LinkedList<String>();
-            List<String> listLink = new LinkedList<String>();
-            NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
+            if (listAllText.get(1).substring(2, listAllText.get(1).length()).equals("[]}")) {   
+                return "emptyValue";
+            } else {
+                allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
 
-            listFull = Arrays.asList(allText.split("\"},\""));
+                String lessNumber, lessName, lessSize;
+                String numberFile, nameFile, sizeFile, linkFile;
+                String result = "";
+                Integer key = 1;
+                List<String> listFull = new LinkedList<String>();
+                List<String> listNumber = new LinkedList<String>();
+                List<String> listName = new LinkedList<String>();
+                List<String> listSize = new LinkedList<String>();
+                List<String> listLink = new LinkedList<String>();
+                NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
 
-            for (String oneElement : listFull) {
+                listFull = Arrays.asList(allText.split("\"},\""));
 
-                listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
+                for (String oneElement : listFull) {
 
-                lessNumber = listNumber.get(1);
-                listName = Arrays.asList(lessNumber.split("\",\"rozmiar\":\""));
+                    listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
 
-                lessName = listName.get(1);
-                listSize = Arrays.asList(lessName.split("\",\"url\":\""));
+                    lessNumber = listNumber.get(1);
+                    listName = Arrays.asList(lessNumber.split("\",\"rozmiar\":\""));
 
-                lessSize = listSize.get(1);
-                listLink = Arrays.asList(lessSize.split("\",\"gfx\":\""));
+                    lessName = listName.get(1);
+                    listSize = Arrays.asList(lessName.split("\",\"url\":\""));
 
-                numberFile = listNumber.get(0);
-                nameFile = listName.get(0);
-                sizeFile = listSize.get(0);
-                linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
+                    lessSize = listSize.get(1);
+                    listLink = Arrays.asList(lessSize.split("\",\"gfx\":\""));
 
-                key = Integer.parseInt(numberFile);
+                    numberFile = listNumber.get(0);
+                    nameFile = listName.get(0);
+                    sizeFile = listSize.get(0);
+                    linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
 
-                //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
-                map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");
+                    key = Integer.parseInt(numberFile);
+
+                    //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
+                    map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");
+                }
+
+                for (Entry<Object, Object> ent : map.entrySet()) {
+                    result += ent.getValue() + "\n";
+                }
+                return allPages[0] + "!@" + result;
             }
-
-            for (Entry<Object, Object> ent : map.entrySet()) {
-                result += ent.getValue() + "\n";
-            }
-            return allPages[0] + "!@" + result;
         }
     }
 
@@ -166,7 +171,7 @@ public class ModelShow {
             getCookie = in.nextLine();
             in.close();
         } else {
-            JOptionPane.showMessageDialog(null, "Brak pliku z cookie.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Brak pliku z cookie.", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
         //end read cookie from file
 
@@ -207,7 +212,7 @@ public class ModelShow {
         String all = "";
 
         if (page > pageMax) {
-            JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Info", JOptionPane.INFORMATION_MESSAGE);
             all = divisionLine(1);
         } else if (page <= 1) {
             all = divisionLine(1);

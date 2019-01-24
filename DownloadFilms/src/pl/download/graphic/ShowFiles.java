@@ -145,14 +145,16 @@ public class ShowFiles extends javax.swing.JFrame {
         List<String> setPageMax = new LinkedList<String>();
 
         if (getSearchWord == null || getSearchWord.equals("")) {
-            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {
             try {
-                //modelShow.downloadFile(getSearchWord, 1);
+                //by nie sciagac plikow - zahaszowac linie nizej
+                modelShow.downloadFile(getSearchWord, 1);
                 //sprawdzenie czy divisionLine nie zwraca blednej zawartosci
                 if (modelShow.divisionLine(1).equals("error")) {
-                    //System.err.println("File not found and return null.");
                     return;
+                } else if (modelShow.divisionLine(1).equals("emptyValue")) {
+                    JOptionPane.showMessageDialog(null, "Brak wyników wyszukiwania.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                 setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
                 maxPageField.setText(setPageMax.get(0));
@@ -179,7 +181,7 @@ public class ShowFiles extends javax.swing.JFrame {
         List<String> result = new LinkedList<String>();
 
         if (getPageValue == null || getPageValue.equals("")) {
-            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {
             try {
                 allPagesResults = modelShow.showAllResults(getSearchWord, Integer.parseInt(getPageValue), Integer.parseInt(pageMax));
@@ -187,7 +189,7 @@ public class ShowFiles extends javax.swing.JFrame {
                 ShowField.setText(result.get(1));
                 ShowField.setCaretPosition(0);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Podaj ilość stron.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Podaj ilość stron.", "Info", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
             }
