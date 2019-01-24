@@ -94,7 +94,7 @@ public class ModelShow {
         List<String> listSize = new LinkedList<String>();
         List<String> listLink = new LinkedList<String>();
         NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
-        
+
         listFull = Arrays.asList(allText.split("\"},\""));
 
         for (String oneElement : listFull) {
@@ -114,15 +114,14 @@ public class ModelShow {
             nameFile = listName.get(0);
             sizeFile = listSize.get(0);
             linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
-            
-            
+
             key = Integer.parseInt(numberFile);
 
             //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
-            map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");              
+            map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");
         }
-       
-        for(Entry<Object, Object> ent:map.entrySet()){
+
+        for (Entry<Object, Object> ent : map.entrySet()) {
             result += ent.getValue() + "\n";
         }
 
@@ -135,6 +134,19 @@ public class ModelShow {
         byte[] buffer = new byte[2048];
         int length;
         String tempDir = System.getProperty("java.io.tmpdir");
+        
+        //read cookie from file
+        String getCookie = "";
+        String path = new File(".").getCanonicalPath();
+        File cookie = new File(path + "\\cookie.txt");
+        if (cookie.exists() && !cookie.isDirectory()) {
+            Scanner in = new Scanner(cookie);
+            getCookie = in.nextLine();
+            in.close();
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak pliku z cookie.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        //end read cookie from file
 
         String urlParameters = "a=doSearch&query=" + searchWord + "&hosting=&page=" + page;
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
@@ -148,7 +160,8 @@ public class ModelShow {
         httpConnection.setRequestProperty("User-Agent", "-");
         httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         httpConnection.setRequestProperty("X-Requested-With", "XMLHttpRequest");
-        httpConnection.setRequestProperty("Cookie", "PHPSESSID=sijc5liid66b52rdtd4f316ji4");
+        //httpConnection.setRequestProperty("Cookie", "PHPSESSID=nj20drdosubqqqdl5hhk0n8jp6");
+        httpConnection.setRequestProperty("Cookie", "PHPSESSID=" + getCookie);
         httpConnection.setRequestProperty("Accept", "*/*");
 
         httpConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
@@ -175,7 +188,7 @@ public class ModelShow {
             JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Error", JOptionPane.ERROR_MESSAGE);
             all = divisionLine(1);
         } else if (page <= 1) {
-            all = divisionLine(1);  
+            all = divisionLine(1);
         } else {
             for (int i = 2; i <= page; i++) {
                 downloadFile(searchWord, i);
