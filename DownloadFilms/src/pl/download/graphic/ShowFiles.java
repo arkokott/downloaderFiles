@@ -148,10 +148,11 @@ public class ShowFiles extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Pole nie może być puste.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             try {
-                modelShow.downloadFile(getSearchWord, 1);
+                //modelShow.downloadFile(getSearchWord, 1);
                 //sprawdzenie czy divisionLine nie zwraca blednej zawartosci
                 if (modelShow.divisionLine(1).equals("error")) {
-                    System.err.println("File not found and return null.");
+                    //System.err.println("File not found and return null.");
+                    return;
                 } else {
                 setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
                 maxPageField.setText(setPageMax.get(0));

@@ -70,21 +70,20 @@ public class ModelShow {
             output.close();
         } else if (numberFile == lastFile) {
             //dla ostatniego wycinamy tylko poczatek
-            
+
             listAllText = Arrays.asList(textFromFile.split("array"));
             textFromFile = listAllText.get(1).substring(4, listAllText.get(1).length());
-            
+
             //textFromFile = textFromFile.substring(26, textFromFile.length());
-            
             Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
             output.append(textFromFile);
             output.close();
         } else {
             //tutaj dla srodkowych plikow, wycinamy poczatek i koniec
-            
+
             listAllText = Arrays.asList(textFromFile.split("array"));
             textFromFile = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
-            
+
             //textFromFile = textFromFile.substring(26, textFromFile.length() - 4);
             Writer output = new BufferedWriter(new FileWriter(tempDir + "lista_0.txt", true));
             output.append(textFromFile + "\"},\"");
@@ -97,60 +96,58 @@ public class ModelShow {
         //sprawdzenie czy allText jest puste
         if (allText == null || allText == "") {
             //JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
-            System.err.println("File not found and return null.");
-        } else {        
-        List<String> listAllText = new LinkedList<String>();
+            //System.err.println("File not found and return null.");
+            return "error";
+        } else {
+            List<String> listAllText = new LinkedList<String>();
 
-        String[] allPages = allText.substring(10).split("\",\"");
+            String[] allPages = allText.substring(10).split("\",\"");
 
-        listAllText = Arrays.asList(allText.split("array"));
-        allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
-        
-        
-        
-        String lessNumber, lessName, lessSize;
-        String numberFile, nameFile, sizeFile, linkFile;
-        String result = "";
-        Integer key = 1;
-        List<String> listFull = new LinkedList<String>();
-        List<String> listNumber = new LinkedList<String>();
-        List<String> listName = new LinkedList<String>();
-        List<String> listSize = new LinkedList<String>();
-        List<String> listLink = new LinkedList<String>();
-        NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
+            listAllText = Arrays.asList(allText.split("array"));
+            allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
 
-        listFull = Arrays.asList(allText.split("\"},\""));
+            String lessNumber, lessName, lessSize;
+            String numberFile, nameFile, sizeFile, linkFile;
+            String result = "";
+            Integer key = 1;
+            List<String> listFull = new LinkedList<String>();
+            List<String> listNumber = new LinkedList<String>();
+            List<String> listName = new LinkedList<String>();
+            List<String> listSize = new LinkedList<String>();
+            List<String> listLink = new LinkedList<String>();
+            NavigableMap<Object, Object> map = new TreeMap<>().descendingMap();
 
-        for (String oneElement : listFull) {
+            listFull = Arrays.asList(allText.split("\"},\""));
 
-            listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
+            for (String oneElement : listFull) {
 
-            lessNumber = listNumber.get(1);
-            listName = Arrays.asList(lessNumber.split("\",\"rozmiar\":\""));
+                listNumber = Arrays.asList(oneElement.split("\":\\{\"nazwa\":\""));
 
-            lessName = listName.get(1);
-            listSize = Arrays.asList(lessName.split("\",\"url\":\""));
+                lessNumber = listNumber.get(1);
+                listName = Arrays.asList(lessNumber.split("\",\"rozmiar\":\""));
 
-            lessSize = listSize.get(1);
-            listLink = Arrays.asList(lessSize.split("\",\"gfx\":\""));
+                lessName = listName.get(1);
+                listSize = Arrays.asList(lessName.split("\",\"url\":\""));
 
-            numberFile = listNumber.get(0);
-            nameFile = listName.get(0);
-            sizeFile = listSize.get(0);
-            linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
+                lessSize = listSize.get(1);
+                listLink = Arrays.asList(lessSize.split("\",\"gfx\":\""));
 
-            key = Integer.parseInt(numberFile);
+                numberFile = listNumber.get(0);
+                nameFile = listName.get(0);
+                sizeFile = listSize.get(0);
+                linkFile = listLink.get(0).replace("\\/", "/"); //nie wyświetlane w result
 
-            //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
-            map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");
+                key = Integer.parseInt(numberFile);
+
+                //result += numberFile + " - " + nameFile + " - " + sizeFile + "MB\n";
+                map.put(key, numberFile + " - " + nameFile + " - " + sizeFile + "MB");
+            }
+
+            for (Entry<Object, Object> ent : map.entrySet()) {
+                result += ent.getValue() + "\n";
+            }
+            return allPages[0] + "!@" + result;
         }
-
-        for (Entry<Object, Object> ent : map.entrySet()) {
-            result += ent.getValue() + "\n";
-        }
-        return allPages[0] + "!@" + result;
-        }
-        return "error";
     }
 
     public void downloadFile(String searchWord, int page) throws MalformedURLException, IOException {
@@ -159,7 +156,7 @@ public class ModelShow {
         byte[] buffer = new byte[2048];
         int length;
         String tempDir = System.getProperty("java.io.tmpdir");
-        
+
         //read cookie from file
         String getCookie = "";
         String path = new File(".").getCanonicalPath();
