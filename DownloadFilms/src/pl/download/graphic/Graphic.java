@@ -109,6 +109,12 @@ public class Graphic extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Realize function on mouse click in button "Generuj". Checks the
+     * correctness of the given value. Checks selected checkBox.
+     *
+     * @param evt default param
+     */
     private void genereteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genereteButtonActionPerformed
         Model model = new Model();
         String getNumberFile = numberFile.getText();
@@ -133,12 +139,19 @@ public class Graphic extends javax.swing.JFrame {
 
     }//GEN-LAST:event_genereteButtonActionPerformed
 
+    /**
+     * Show new form on mouse click the button "Pokaz dostepne pliki".
+     *
+     * @param evt default param
+     */
     private void showFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showFilesButtonActionPerformed
         ShowFiles sf = new ShowFiles();
         sf.setVisible(true);
     }//GEN-LAST:event_showFilesButtonActionPerformed
 
     /**
+     * Deafult method.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {

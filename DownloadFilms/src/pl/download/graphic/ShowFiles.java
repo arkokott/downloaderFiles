@@ -137,6 +137,13 @@ public class ShowFiles extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Realize function on mouse click in button "Szukaj". Checks
+     * the correctness of the given value. Checks the correctness value received
+     * from the method. Show file list from search.
+     *
+     * @param evt default param
+     */
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
@@ -156,12 +163,12 @@ public class ShowFiles extends javax.swing.JFrame {
                 } else if (modelShow.divisionLine(1).equals("emptyValue")) {
                     JOptionPane.showMessageDialog(null, "Brak wyników wyszukiwania.", "Info", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
-                maxPageField.setText(setPageMax.get(0));
+                    setPageMax = Arrays.asList(modelShow.divisionLine(1).split("!@"));
+                    maxPageField.setText(setPageMax.get(0));
 
-                getListFiles = setPageMax.get(1);
-                ShowField.setText(getListFiles);
-                ShowField.setCaretPosition(0);
+                    getListFiles = setPageMax.get(1);
+                    ShowField.setText(getListFiles);
+                    ShowField.setCaretPosition(0);
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ShowFiles.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,6 +178,12 @@ public class ShowFiles extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    /**
+     * Realize function on mouse click in button "Pokaz wyniki". Checks the
+     * correctness of the given value. Get value to "pageField".
+     *
+     * @param evt default param
+     */
     private void allPageViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allPageViewButtonActionPerformed
         ShowField.setLineWrap(true);
         ModelShow modelShow = new ModelShow();
@@ -196,6 +209,12 @@ public class ShowFiles extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_allPageViewButtonActionPerformed
 
+    /**
+     * Realize function on close window from ShowFile form delete all files
+     * created by the program in tempdir
+     *
+     * @param evt default param
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         String tempDir = System.getProperty("java.io.tmpdir");
         String nameFile;
@@ -215,6 +234,8 @@ public class ShowFiles extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     /**
+     * Deafult method.
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {

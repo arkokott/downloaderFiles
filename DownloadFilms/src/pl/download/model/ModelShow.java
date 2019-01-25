@@ -30,6 +30,13 @@ import javax.swing.JOptionPane;
  */
 public class ModelShow {
 
+    /**
+     * Reads the file and passes its contents on. Checks if the file exists.
+     *
+     * @param numberFile is number file to read
+     * @throws java.io.FileNotFoundException this is exception
+     * @return file content
+     */
     private String readFile(int numberFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
         File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
@@ -46,6 +53,14 @@ public class ModelShow {
         return textFromFile;
     }
 
+    /**
+     * Reads the file, create new file, combines individual files into one and
+     * passes its contents on. Checks if the file exists.
+     *
+     * @param numberFile number of file to open and read
+     * @param lastFile number to compare with numberFile
+     * @throws java.io.FileNotFoundException this is exception
+     */
     private void readAndSaveFile(int numberFile, int lastFile) throws FileNotFoundException, IOException {
         String tempDir = System.getProperty("java.io.tmpdir");
         File file = new File(tempDir + "\\lista_" + numberFile + ".txt");
@@ -91,11 +106,18 @@ public class ModelShow {
         }
     }
 
+    /**
+     * Divided the content received from readFile(). Splited value, create
+     * listed and put data.
+     *
+     * @param option value passed to readFile()
+     * @return value from map and number page
+     * @throws java.io.FileNotFoundException this is exception
+     */
     public String divisionLine(int option) throws FileNotFoundException, IOException {
         String allText = readFile(option);
         //sprawdzenie czy allText jest puste
         if (allText == null || allText == "") {
-            //JOptionPane.showMessageDialog(null, "Error", "Error", JOptionPane.ERROR_MESSAGE);
             //System.err.println("File not found and return null.");
             return "error";
         } else {
@@ -105,7 +127,7 @@ public class ModelShow {
 
             listAllText = Arrays.asList(allText.split("array"));
 
-            if (listAllText.get(1).substring(2, listAllText.get(1).length()).equals("[]}")) {   
+            if (listAllText.get(1).substring(2, listAllText.get(1).length()).equals("[]}")) {
                 return "emptyValue";
             } else {
                 allText = listAllText.get(1).substring(4, listAllText.get(1).length() - 4);
@@ -155,6 +177,13 @@ public class ModelShow {
         }
     }
 
+    /**
+     * Downlaod files from www. Check if exist file with cookie hash.
+     *
+     * @param searchWord searched phrase
+     * @param page number to download file
+     * @throws java.net.MalformedURLException this is exception
+     */
     public void downloadFile(String searchWord, int page) throws MalformedURLException, IOException {
         InputStream inputStream = null;
         OutputStream outputStream = null;
@@ -208,8 +237,16 @@ public class ModelShow {
         inputStream.close();
     }
 
+    /**
+     *
+     * @param searchWord
+     * @param page number gived by user
+     * @param pageMax number to compare with page
+     * @return data from file
+     * @throws IOException this is exception
+     */
     public String showAllResults(String searchWord, Integer page, Integer pageMax) throws IOException {
-        String all = "";
+        String all;
 
         if (page > pageMax) {
             JOptionPane.showMessageDialog(null, "Podana liczba jest większa od maksymalnej.", "Info", JOptionPane.INFORMATION_MESSAGE);

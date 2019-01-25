@@ -12,6 +12,12 @@ public class Model {
 
     Random rand = new Random();
 
+    /**
+     * Create hash in MD5 needed to create a link.
+     *
+     * @param input string from which it is created hash
+     * @return md5 hash
+     */
     public static String getMd5(String input) {
         try {
 
@@ -29,6 +35,13 @@ public class Model {
         }
     }
 
+    /**
+     * Generate link to download file. Checks if generate with wget or no.
+     *
+     * @param fileNumber is number file which we want download
+     * @param checkBoxWgetSelected option wget
+     * @return ready link to download
+     */
     public String link(String fileNumber, int checkBoxWgetSelected) {
         int numberSrv = rand.nextInt(23) + 1;
         String link = "";
