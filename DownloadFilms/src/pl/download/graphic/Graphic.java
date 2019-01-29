@@ -1,7 +1,11 @@
 package pl.download.graphic;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pl.download.model.Model;
+import pl.download.model.Cookie;
 
 /**
  *
@@ -33,6 +37,7 @@ public class Graphic extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         generateLinkField = new javax.swing.JTextArea();
         checkBoxWget = new javax.swing.JCheckBox();
+        getCookieButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -61,6 +66,13 @@ public class Graphic extends javax.swing.JFrame {
         checkBoxWget.setSelected(true);
         checkBoxWget.setText("Generuj z wget");
 
+        getCookieButton.setText("Pobierz Cookie");
+        getCookieButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getCookieButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -68,6 +80,8 @@ public class Graphic extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(showFilesButton)
+                .addGap(82, 82, 82)
+                .addComponent(getCookieButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,7 +115,9 @@ public class Graphic extends javax.swing.JFrame {
                         .addComponent(checkBoxWget))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(showFilesButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(showFilesButton)
+                    .addComponent(getCookieButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -149,6 +165,17 @@ public class Graphic extends javax.swing.JFrame {
         sf.setVisible(true);
     }//GEN-LAST:event_showFilesButtonActionPerformed
 
+    private void getCookieButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getCookieButtonActionPerformed
+        Cookie cookie = new Cookie();
+        
+        try {
+            cookie.DownloadCookieFile();
+        } catch (IOException ex) {
+            Logger.getLogger(Graphic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_getCookieButtonActionPerformed
+
     /**
      * Deafult method.
      *
@@ -191,6 +218,7 @@ public class Graphic extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkBoxWget;
     private javax.swing.JTextArea generateLinkField;
     private javax.swing.JButton genereteButton;
+    private javax.swing.JButton getCookieButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField numberFile;
     private javax.swing.JLabel numberFileLabel;
