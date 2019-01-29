@@ -19,7 +19,7 @@ public class Cookie {
         String path = new File(".").getCanonicalPath();
         String cookieToSplit = null;
 
-        String urlParameters = "login=traur&password=traurek1206&securityKey=1206";
+        String urlParameters = "login=filebitinteriapl&password=file.bit@interia.pl&securityKey=1234";
         byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
 
